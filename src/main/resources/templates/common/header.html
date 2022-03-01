@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www/thymleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<nav th:fragment="header" class="navbar navbar-expand-lg navbar-dark bg-primary" style="height: 65px">
+
+    <div class="container">
+
+        <a class="navbar-brand" th:href="${index}">ChenshuStudy</a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
+                aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="navbar-collapse collapse" id="navbarColor01">
+            <ul class="navbar-nav mr-auto">
+                <li th:class="${activeUrl=='index.html'?'nav-item active':'nav-item'}">
+                    <a class="nav-link" th:href="@{/index}">Home</a>
+                </li>
+                <li th:class="${activeUrl=='blog.html'?'nav-item active':'nav-item'}">
+                    <a class="nav-link" th:href="@{/blog}">Blogs</a>
+                </li>
+                <li th:class="${activeUrl=='saying.html'?'nav-item active':'nav-item'}">
+                    <a class="nav-link" th:href="@{/saying}">Saying</a>
+                </li>
+
+                <li th:class="${activeUrl=='qeustion.html'?'nav-item active':'nav-item'}">
+                    <a class="nav-link" th:href="@{/question}">Questions</a>
+                </li>
+
+                <li th:class="${activeUrl=='timeLine.html'?'nav-item active':'nav-item'}">
+                    <a class="nav-link" href="#">TimeLine</a>
+                </li>
+
+                <li th:class="${activeUrl=='me.html'?'nav-item active':'nav-item'}">
+                    <a class="nav-link" href="#">About me</a>
+                </li>
+
+            </ul>
+
+            <div sec:authorize="!isAuthenticated()">
+                <a class="btn btn-sm btn-primary" th:href="@{/toLogin}" role="button">
+                    <svg class="bi bi-person-fill" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                              d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                    </svg>
+                    Login
+                </a>
+            </div>
+
+            <div sec:authorize="isAuthenticated()">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown">
+                        <a  style="color: rgba(0,0,0,.5);text-decoration: none" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img th:src="${session.loginUser.getAvatar()}" style="width: 30px;height:30px;border-radius: 50%;" alt="">
+                            <span sec:authentication="name"></span>
+                            <!--<span th:text="${session.SPRING_SECURITY_CONTEXT.authentication.principal.username}"></span>-->
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" th:href="@{'/user/'+${session.loginUser.getUid()}}">个人中心</a>
+                            <a class="dropdown-item" th:href="@{'/userinfo/setting/'+${session.loginUser.getUid()}}">更新资料</a>
+                            <a class="dropdown-item" th:href="@{'/user/update-avatar/'+${session.loginUser.getUid()}}">头像上传</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" th:href="@{/logout}">注销</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</nav>
+
+</html>
